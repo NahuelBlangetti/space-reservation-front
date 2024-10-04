@@ -6,26 +6,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
+
+  constructor(private http: HttpClient) { }
+
   private apiUrl = 'http://localhost:8000/api';
 
-  constructor(private http: HttpClient) {}
-    /* Auth */
-    register(data: any): Observable<any> {
-      return this.http.post(`${this.apiUrl}/register`, data);
-    }
-    login(data: any): Observable<any> {
-      return this.http.post(`${this.apiUrl}/login`, data);
-    }
 
-
-
-    
-    getItems(): Observable<any> {
-      return this.http.get(`${this.apiUrl}/spaces`);
-    }
+  /* Auth */
+  register(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, data);
+  }
   
-    
-    addItem(data: any): Observable<any> {
-      return this.http.post(`${this.apiUrl}/spaces`, data);
-    }
-}
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, { email, password });
+  }
+
+  getItems(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/spaces`);
+  }
+
+
+  addItem(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/spaces`, data);
+  }
+} 
