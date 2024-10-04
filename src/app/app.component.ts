@@ -6,6 +6,7 @@ import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
     SigninComponent,
     SignupComponent,
     HomeComponent,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
