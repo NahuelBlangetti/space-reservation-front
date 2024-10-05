@@ -55,7 +55,7 @@
               <img class="h-40 rounded w-full object-cover object-center mb-6" src="{{ space.photo }}" alt="content">
               <h1 class="tracking-widest text-green-500 font-medium title-font">{{ space.name }}</h1>
               <p class="text-gray-600">Capacidad: {{ space.capacity }} personas</p>
-              <p class="text-gray-600">Tipo de Espacio: {{ space.type }}</p>
+              <p class="text-gray-600">Tipo de Espacio: {{ typeSpaces(space.type)}}</p>
             </div>
           </div>
         </div>
@@ -114,9 +114,9 @@
               <label for="capacity" class="block text-gray-700 text-sm font-bold mb-2">Capacidad:</label>
               <select id="capacity" [(ngModel)]="selectedSpace.capacity" name="capacity" class="bg-gray-100 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Selecciona una capacidad</option>
-                <option [value]="5">Hasta 5 personas</option>
-                <option [value]="10">Hasta 10 personas</option>
-                <option [value]="20">Hasta 20 personas</option>
+                <option [ngValue]="5">Hasta 5 personas</option>
+                <option [ngValue]="10">Hasta 10 personas</option>
+                <option [ngValue]="20">Hasta 20 personas</option>
               </select>
           </div>
           <div class="mb-4">
@@ -127,6 +127,10 @@
               <option value="coworking">Coworking</option>
               <option value="office">Oficina</option>
             </select>
+          </div>
+          <div class="mb-4">
+            <label for="photo" class="block text-gray-700">URL de la Imagen:</label>
+            <input id="photo" [(ngModel)]="selectedSpace.photo" name="photo" required class="border rounded w-full py-2 px-3" />
           </div>
           <div class="flex space-x-2 mt-4">
             <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded">
@@ -151,7 +155,12 @@
             <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nombre:</label>
             <input type="text" id="name" [(ngModel)]="newSpace.name" name="name" required class="bg-gray-100 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
-    
+          
+          <div class="mb-4">
+            <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Descripción:</label>
+            <textarea id="description" [(ngModel)]="newSpace.description" name="description" required class="bg-gray-100 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          </div>
+
           <div class="mb-4">
             <label for="type" class="block text-gray-700 text-sm font-bold mb-2">Tipo de Espacio:</label>
             <select id="type" [(ngModel)]="newSpace.type" name="type" required class="bg-gray-100 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">

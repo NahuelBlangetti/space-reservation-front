@@ -59,7 +59,7 @@ export class MyspacesComponent {
   mostrarModal: boolean = false;
  
   nuevaReserva: Reserva = {
-    id: 0, // Inicializa como 0 o algún otro número, no null
+    id: 0,
     user_id: 0,
     space_id: 0,
     evento: '',

@@ -22,8 +22,10 @@ export class HeaderComponent {
   }
 
   logout(event: MouseEvent) {
-    event.stopPropagation(); // Evita que el evento se propague
-    this.authService.logout(); // Llama a tu método de logout
-    this.router.navigate(['/']); // Navega a la ruta deseada
+    event.stopPropagation();
+    this.authService.logout();
+    this.router.navigate(['/']).then(() => {
+      location.reload();
+    });
   }
 }
