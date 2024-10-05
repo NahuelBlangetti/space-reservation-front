@@ -46,6 +46,19 @@ export class HomeComponent implements OnInit {
   selectedSpaceType: string = '';
   selectedCapacity: number | null = null;
   selectedStartDate: string = '';
+  newSpace: Space = {
+    id: 0,
+    name: '',
+    type: '',
+    capacity: 0,
+    startDate: '',
+    endDate: '',
+    description: '',
+    unavailableTimes: [],
+    reservations: [],
+    photo: '',
+  };
+  
   selectedSpace: Space = {
     id: 0,
     name: '',
@@ -59,8 +72,9 @@ export class HomeComponent implements OnInit {
     photo: '',
   };
   user: User | null = null;
-  isEditing: boolean = false; // Controla la visibilidad del modal de edición
+  isEditing: boolean = false;
   isModalOpen: boolean = false;
+  isCreateModalOpen: boolean = false;
 
   constructor(private apiService: ApiService) {}
 
@@ -215,10 +229,31 @@ export class HomeComponent implements OnInit {
     this.isEditing = false; // Ocultar el modal de edición
   }
 
+  openCreateModal() {
+    this.isCreateModalOpen = true;
+  }
+  
+  // Cierra el modal
+  closeCreateModal() {
+    this.isCreateModalOpen = false;
+  }
 
+  // Funciones para crear, editar y eliminar espacios
 
-  // Funciones para editar y eliminar espacios
-
+  createSpace(space: Space) {
+    this.apiService.createSpace(space).subscribe({
+      next: () => {
+        this.closeCreateModal(); // Cerrar el modal después de guardar
+        this.getSpaces(); // Opcionalmente, volver a obtener la lista de espacios
+        // Restablecer el nuevo espacio
+        this.newSpace = {id: 0, name: '', type: '', capacity: 0, startDate: '', endDate: '', description: '', unavailableTimes: [], reservations: [], photo: '' };
+      },
+      error: (error) => {
+        console.error('Error al crear el espacio:', error);
+      }
+    });
+  }
+  
   updateSpace(space: Space) {
     this.apiService.editSpace(space.id, space).subscribe({
       next: () => {

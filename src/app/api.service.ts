@@ -84,6 +84,18 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/reservations/${id}`, { headers });
   }
 
+  createSpace(data: any): Observable<any> {
+    const token = localStorage.getItem('access_token'); 
+
+    // Incluimos el token en las cabeceras
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.apiUrl}/spaces`, data, { headers });
+  }
+
+
   editSpace(id: number, data: any): Observable<any> {
 
     const token = localStorage.getItem('access_token'); 
