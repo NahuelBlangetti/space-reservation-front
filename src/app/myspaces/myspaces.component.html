@@ -1,71 +1,106 @@
 <div class="container mx-auto mt-10">
-    <!-- Título -->
-    <h1 class="text-3xl font-bold text-center mb-8">Gestión de Reservas</h1>
-  
-    <!-- Tabla de Reservas Actuales -->
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-xl font-bold mb-4">Tus Reservas Actuales</h2>
-      <table class="min-w-full bg-white">
-        <thead>
-          <tr>
-            <th class="py-2 px-4 border-b">Evento</th>
-            <th class="py-2 px-4 border-b">Fecha</th>
-            <th class="py-2 px-4 border-b">Hora Inicio</th>
-            <th class="py-2 px-4 border-b">Hora Fin</th>
-            <th class="py-2 px-4 border-b">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let reserva of reservas">
-            <td class="py-2 px-4 border-b">{{ reserva.evento }}</td>
-            <td class="py-2 px-4 border-b">{{ reserva.fecha }}</td>
-            <td class="py-2 px-4 border-b">{{ reserva.horaInicio }}</td>
-            <td class="py-2 px-4 border-b">{{ reserva.horaFin }}</td>
-            <td class="py-2 px-4 border-b">
-              <button (click)="editarReserva(reserva)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded">Modificar</button>
-              <button (click)="cancelarReserva(reserva)" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded">Cancelar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  
-    <!-- Botón para Abrir Modal de Nueva Reserva -->
-    <div class="flex justify-center mt-8">
-      <button (click)="abrirModal()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Nueva Reserva</button>
-    </div>
-  
-    <!-- Modal para Cargar una Nueva Reserva -->
-    <div *ngIf="mostrarModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-      <div class="bg-white rounded-lg p-8 shadow-lg w-1/3">
-        <h2 class="text-xl font-bold mb-4">Cargar Nueva Reserva</h2>
-  
-        <!-- Formulario de Nueva Reserva -->
-        <form (ngSubmit)="guardarReserva()">
-          <div class="space-y-4">
-            <div>
-              <label for="evento" class="block text-sm font-medium">Nombre del Evento</label>
-              <input [(ngModel)]="nuevaReserva.evento" name="evento" type="text" id="evento" class="w-full border border-gray-300 rounded-lg p-2 mt-1" placeholder="Nombre del Evento" required>
-            </div>
-            <div>
-              <label for="fecha" class="block text-sm font-medium">Fecha</label>
-              <input [(ngModel)]="nuevaReserva.fecha" name="fecha" type="date" id="fecha" class="w-full border border-gray-300 rounded-lg p-2 mt-1" required>
-            </div>
-            <div>
-              <label for="horaInicio" class="block text-sm font-medium">Hora de Inicio</label>
-              <input [(ngModel)]="nuevaReserva.horaInicio" name="horaInicio" type="time" id="horaInicio" class="w-full border border-gray-300 rounded-lg p-2 mt-1" required>
-            </div>
-            <div>
-              <label for="horaFin" class="block text-sm font-medium">Hora de Fin</label>
-              <input [(ngModel)]="nuevaReserva.horaFin" name="horaFin" type="time" id="horaFin" class="w-full border border-gray-300 rounded-lg p-2 mt-1" required>
+  <!-- Título -->
+  <h1 class="text-3xl font-bold text-center mb-8">Gestión de Reservas</h1>
+
+  <!-- Tabla de Reservas Actuales -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-bold mb-4">Tus Reservas Actuales</h2>
+    <table class="min-w-full bg-white">
+      <thead>
+        <tr>
+          <th class="py-2 px-4 border-b">Evento</th>
+          <th class="py-2 px-4 border-b">Fecha</th>
+          <th class="py-2 px-4 border-b">Hora Inicio</th>
+          <th class="py-2 px-4 border-b">Hora Fin</th>
+          <th class="py-2 px-4 border-b">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reserva of reservas">
+          <td class="py-2 px-4 border-b">{{ reserva.space.name }}</td>
+          <td class="py-2 px-4 border-b">{{ reserva.start_time | date:'shortDate' }}</td>
+          <td class="py-2 px-4 border-b">{{ reserva.start_time | date:'shortTime' }}</td>
+          <td class="py-2 px-4 border-b">{{ reserva.end_time | date:'shortTime' }}</td>
+          <td class="py-2 px-4 border-b">
+            <button (click)="editarReserva(reserva)"
+              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 my-1 rounded">Modificar</button>
+            <button (click)="cancelarReserva(reserva)"
+              class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 my-1 rounded">Cancelar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div> 
+
+  <!-- Botón para Abrir Modal de Nueva Reserva -->
+  <div class="flex justify-center mt-8">
+    <button (click)="abrirModal()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Nueva
+      Reserva</button>
+  </div>
+
+  <!-- Modal para Cargar una Nueva Reserva -->
+  <div *ngIf="mostrarModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white rounded-lg p-8 shadow-lg w-1/3">
+      <h2 class="text-xl font-bold mb-4">Cargar Nueva Reserva</h2>
+
+      <!-- Formulario de Nueva Reserva -->
+      <form (ngSubmit)="guardarReserva()" #reservaForm="ngForm">
+        <div class="space-y-4">
+          <div>
+            <label for="evento" class="block text-sm font-medium">Nombre del Evento</label>
+            <input [(ngModel)]="nuevaReserva.evento" name="evento" type="text" id="evento"
+              class="w-full border border-gray-300 rounded-lg p-2 mt-1" placeholder="Nombre del Evento" required
+              #eventoInput="ngModel" />
+            <div *ngIf="eventoInput.invalid && (eventoInput.dirty || eventoInput.touched)"
+              class="text-red-500 text-sm mt-1">
+              El nombre del evento es requerido.
             </div>
           </div>
-          <!-- Botones del Modal -->
-          <div class="flex justify-end space-x-4 mt-6">
-            <button type="button" (click)="cerrarModal()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">Cerrar</button>
-            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Guardar</button>
+
+          <div>
+            <label for="fecha" class="block text-sm font-medium">Fecha</label>
+            <input [(ngModel)]="nuevaReserva.fecha" name="fecha" type="date" id="fecha"
+              class="w-full border border-gray-300 rounded-lg p-2 mt-1" required #fechaInput="ngModel" />
+            <div *ngIf="fechaInput.invalid && (fechaInput.dirty || fechaInput.touched)"
+              class="text-red-500 text-sm mt-1">
+              La fecha es requerida.
+            </div>
           </div>
-        </form>
-      </div>
+
+          <div>
+            <label for="horaInicio" class="block text-sm font-medium">Hora de Inicio</label>
+            <input [(ngModel)]="nuevaReserva.horaInicio" name="horaInicio" type="time" id="horaInicio"
+              class="w-full border border-gray-300 rounded-lg p-2 mt-1" required #horaInicioInput="ngModel" />
+            <div *ngIf="horaInicioInput.invalid && (horaInicioInput.dirty || horaInicioInput.touched)"
+              class="text-red-500 text-sm mt-1">
+              La hora de inicio es requerida.
+            </div>
+          </div>
+
+          <div>
+            <label for="horaFin" class="block text-sm font-medium">Hora de Fin</label>
+            <input [(ngModel)]="nuevaReserva.horaFin" name="horaFin" type="time" id="horaFin"
+              class="w-full border border-gray-300 rounded-lg p-2 mt-1" required #horaFinInput="ngModel" />
+            <div *ngIf="horaFinInput.invalid && (horaFinInput.dirty || horaFinInput.touched)"
+              class="text-red-500 text-sm mt-1">
+              La hora de fin es requerida.
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones del Modal -->
+        <div class="flex justify-end space-x-4 mt-6">
+          <button type="button" (click)="cerrarModal()"
+            class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded">
+            Cerrar
+          </button>
+          <button type="submit" [disabled]="reservaForm.invalid || loading"
+            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+            {{ loading ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+
     </div>
-  </div>  
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service'; // Asegúrate de importar ApiService
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { ApiService } from './api.service'; // Asegúrate de que la ruta es correcta
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,13 @@ export class AuthService {
   private loggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.loggedInSubject.asObservable();
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+    // Comprobar si hay un token al iniciar la aplicación
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      this.loggedInSubject.next(true);
+    }
+  }
 
   login(email: string, password: string): Observable<any> {
     return this.apiService.login(email, password).pipe(
@@ -24,7 +31,7 @@ export class AuthService {
 
   logout() {
     console.log('Logout called');
-    localStorage.removeItem('authToken'); // Asegúrate de limpiar correctamente
+    localStorage.removeItem('access_token'); // Asegúrate de limpiar correctamente
     this.loggedInSubject.next(false);
   }
 

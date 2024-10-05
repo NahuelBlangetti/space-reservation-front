@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,12 +11,11 @@ export class ApiService {
 
   private apiUrl = 'http://localhost:8000/api';
 
-
   /* Auth */
   register(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
-  
+
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { email, password });
   }
@@ -29,4 +28,28 @@ export class ApiService {
   addItem(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/spaces`, data);
   }
+
+  getReservations(): Observable<any> {
+    const token = localStorage.getItem('access_token'); // Asegúrate de usar el mismo nombre
+
+    // Incluimos el token en las cabeceras
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.apiUrl}/reservations`, { headers });
+  }
+
+  addReservation(data: any): Observable<any> {
+    const token = localStorage.getItem('access_token'); // Asegúrate de usar el mismo nombre
+
+    // Incluimos el token en las cabeceras
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.apiUrl}/reservations`, data, { headers });
+  }
+  
+
 } 
