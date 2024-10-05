@@ -17,16 +17,16 @@
       </thead>
       <tbody>
         <tr *ngFor="let reserva of reservas">
-          <td class="py-2 px-4 border-b">{{ reserva.space.name }}</td>
+          <td class="py-2 px-4 border-b">{{ reserva.space ? reserva.space.name : 'Sin espacio' }}</td>
           <td class="py-2 px-4 border-b">{{ reserva.start_time | date:'shortDate' }}</td>
           <td class="py-2 px-4 border-b">{{ reserva.start_time | date:'shortTime' }}</td>
           <td class="py-2 px-4 border-b">{{ reserva.end_time | date:'shortTime' }}</td>
           <td class="py-2 px-4 border-b">
-            <button (click)="editarReserva(reserva)"
+            <button (click)="editarReserva(reserva)" 
               class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 my-1 rounded">Modificar</button>
-            <button (click)="cancelarReserva(reserva)"
+            <button (click)="cancelarReserva(reserva)" 
               class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 my-1 rounded">Cancelar</button>
-          </td>
+          </td>          
         </tr>
       </tbody>
     </table>
@@ -47,13 +47,12 @@
       <form (ngSubmit)="guardarReserva()" #reservaForm="ngForm">
         <div class="space-y-4">
           <div>
-            <label for="evento" class="block text-sm font-medium">Nombre del Evento</label>
-            <input [(ngModel)]="nuevaReserva.evento" name="evento" type="text" id="evento"
-              class="w-full border border-gray-300 rounded-lg p-2 mt-1" placeholder="Nombre del Evento" required
-              #eventoInput="ngModel" />
-            <div *ngIf="eventoInput.invalid && (eventoInput.dirty || eventoInput.touched)"
-              class="text-red-500 text-sm mt-1">
-              El nombre del evento es requerido.
+            <label for="space" class="block text-sm font-medium">Seleccionar Espacio</label>
+            <select [(ngModel)]="nuevaReserva.space_id" name="space" id="space" class="w-full border border-gray-300 rounded-lg p-2 mt-1" required>
+              <option *ngFor="let space of spaces" [value]="space.id">{{ space.name }}</option>
+            </select>
+            <div *ngIf="!nuevaReserva.space_id" class="text-red-500 text-sm mt-1">
+              El espacio es requerido.
             </div>
           </div>
 

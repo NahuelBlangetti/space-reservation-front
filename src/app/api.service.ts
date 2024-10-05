@@ -51,5 +51,25 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/reservations`, data, { headers });
   }
   
+  updateReservation(id: number, data: any): Observable<any> {
+    const token = localStorage.getItem('access_token'); // Asegúrate de usar el mismo nombre
 
+    // Incluimos el token en las cabeceras
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.put(`${this.apiUrl}/reservations/${id}`, data, { headers });
+  }
+
+  deleteReservation(id: number): Observable<any> {
+    const token = localStorage.getItem('access_token'); // Asegúrate de usar el mismo nombre
+
+    // Incluimos el token en las cabeceras
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.delete(`${this.apiUrl}/reservations/${id}`, { headers });
+  }
 } 
