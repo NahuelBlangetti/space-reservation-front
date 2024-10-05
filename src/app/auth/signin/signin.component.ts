@@ -36,7 +36,7 @@ export class SigninComponent{
         },
         (error) => {
           console.error('Error de inicio de sesión', error);
-          // Manejar el error (por ejemplo, mostrar un mensaje)
+          alert('Error de inicio de sesión');
         }
       );
     }

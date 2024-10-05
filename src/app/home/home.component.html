@@ -19,7 +19,7 @@
                 <option value="office">Oficina</option>
               </select>
             </div>
-
+      
             <div>
               <label for="capacity" class="block text-gray-700 text-sm font-bold mb-2">Capacidad:</label>
               <select id="capacity" [(ngModel)]="selectedCapacity" name="capacity" class="bg-gray-100 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -29,7 +29,7 @@
                 <option [value]="20">Hasta 20 personas</option>
               </select>
             </div>
-
+      
             <div>
               <label for="startDate" class="block text-gray-700 text-sm font-bold mb-2">Fecha de inicio:</label>
               <input type="date" id="startDate" [(ngModel)]="selectedStartDate" name="startDate" class="bg-gray-100 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -45,11 +45,11 @@
       </div>
 
       <div class="container mx-auto p-4">
-        <div *ngFor="let space of filteredSpaces" class="flex flex-wrap -m-4">
-          <div class="xl:w-1/4 md:w-1/2 p-5">
-            <div class="bg-gray-100 p-6 rounded-lg">
-              <img class="h-40 rounded w-full object-cover object-center mb-6" src="https://dummyimage.com/720x400"
-                alt="content">
+        <!-- Ajustamos el contenedor para usar grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div *ngFor="let space of filteredSpaces">
+            <div class="bg-gray-100 p-6 rounded-lg cursor-pointer" (click)="openModal(space)">
+              <img class="h-40 rounded w-full object-cover object-center mb-6" src="{{ space.photo }}" alt="content">
               <h1 class="tracking-widest text-green-500 font-medium title-font">{{ space.name }}</h1>
               <p class="text-gray-600">Capacidad: {{ space.capacity }} personas</p>
               <p class="text-gray-600">Tipo de Espacio: {{ space.type }}</p>
@@ -58,5 +58,85 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
+      <div class="fixed inset-0 bg-black opacity-30"></div>
+      
+      <div class="bg-white p-5 rounded-lg shadow-lg max-w-md mx-auto relative z-10">
+        <h2 class="text-xl font-bold">{{ selectedSpace.name }}</h2>
+        <p><strong>Descripción:</strong> {{ selectedSpace.description }}</p>
+        <p><strong>Capacidad:</strong> {{ selectedSpace.capacity }} personas</p>
+        <p><strong>Horarios ocupados:</strong></p>
+        <ul>
+          <li *ngFor="let reservation of selectedSpace.reservations">
+            {{ reservation.start_time | date:'short' }} - {{ reservation.end_time | date:'short' }}
+          </li>
+        </ul>
+
+        <!-- Botones que solo se muestran si el usuario es administrador -->
+        <div *ngIf="user?.is_admin" class="flex space-x-2 mt-4">
+          <button (click)="editSpace(selectedSpace)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded">
+            Editar
+          </button>
+          <button (click)="deleteSpace(selectedSpace)" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded">
+            Eliminar
+          </button>
+        </div>
+
+        <div class="flex space-x-2 mt-4">
+          <button (click)="closeModal()" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-1 px-3 rounded">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div *ngIf="isEditing" class="fixed inset-0 flex items-center justify-center z-50">
+      <div class="fixed inset-0 bg-black opacity-30"></div>
+
+      <div class="bg-white p-5 rounded-lg shadow-lg max-w-md mx-auto relative z-10">
+        <h2 class="text-xl font-bold">Editar Espacio</h2>
+        <form (ngSubmit)="updateSpace(selectedSpace)">
+          <div class="mb-4">
+            <label for="name" class="block text-gray-700">Nombre:</label>
+            <input id="name" [(ngModel)]="selectedSpace.name" name="name" required class="border rounded w-full py-2 px-3" />
+          </div>
+          <div class="mb-4">
+            <label for="description" class="block text-gray-700">Descripción:</label>
+            <textarea id="description" [(ngModel)]="selectedSpace.description" name="description" class="border rounded w-full py-2 px-3"></textarea>
+          </div>
+          <div class="mb-4">
+              <label for="capacity" class="block text-gray-700 text-sm font-bold mb-2">Capacidad:</label>
+              <select id="capacity" [(ngModel)]="selectedSpace.capacity" name="capacity" class="bg-gray-100 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Selecciona una capacidad</option>
+                <option [value]="5">Hasta 5 personas</option>
+                <option [value]="10">Hasta 10 personas</option>
+                <option [value]="20">Hasta 20 personas</option>
+              </select>
+          </div>
+          <div class="mb-4">
+            <label for="spaceType" class="block text-gray-700 text-sm font-bold mb-2">Tipo de Espacio:</label>
+            <select id="spaceType" [(ngModel)]="selectedSpace.type" name="spaceType" class="bg-gray-100 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">Selecciona un tipo de espacio</option>
+              <option value="meeting_room">Sala de Reuniones</option>
+              <option value="coworking">Coworking</option>
+              <option value="office">Oficina</option>
+            </select>
+          </div>
+          <div class="flex space-x-2 mt-4">
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded">
+              Guardar Cambios
+            </button>
+            <button (click)="closeEditModal()" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-1 px-3 rounded">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
   </div>
 </section>

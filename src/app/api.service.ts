@@ -29,8 +29,19 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/spaces`, data);
   }
 
+  getUser(): Observable<any> {
+    const token = localStorage.getItem('access_token'); 
+
+    // Incluimos el token en las cabeceras
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get(`${this.apiUrl}/user`, { headers });
+  }
+
   getReservations(): Observable<any> {
-    const token = localStorage.getItem('access_token'); // Asegúrate de usar el mismo nombre
+    const token = localStorage.getItem('access_token'); 
 
     // Incluimos el token en las cabeceras
     const headers = new HttpHeaders({
@@ -41,7 +52,7 @@ export class ApiService {
   }
 
   addReservation(data: any): Observable<any> {
-    const token = localStorage.getItem('access_token'); // Asegúrate de usar el mismo nombre
+    const token = localStorage.getItem('access_token'); 
 
     // Incluimos el token en las cabeceras
     const headers = new HttpHeaders({
@@ -52,7 +63,7 @@ export class ApiService {
   }
   
   updateReservation(id: number, data: any): Observable<any> {
-    const token = localStorage.getItem('access_token'); // Asegúrate de usar el mismo nombre
+    const token = localStorage.getItem('access_token'); 
 
     // Incluimos el token en las cabeceras
     const headers = new HttpHeaders({
@@ -63,7 +74,7 @@ export class ApiService {
   }
 
   deleteReservation(id: number): Observable<any> {
-    const token = localStorage.getItem('access_token'); // Asegúrate de usar el mismo nombre
+    const token = localStorage.getItem('access_token'); 
 
     // Incluimos el token en las cabeceras
     const headers = new HttpHeaders({
@@ -72,4 +83,27 @@ export class ApiService {
 
     return this.http.delete(`${this.apiUrl}/reservations/${id}`, { headers });
   }
+
+  editSpace(id: number, data: any): Observable<any> {
+
+    const token = localStorage.getItem('access_token'); 
+
+    // Incluimos el token en las cabeceras
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.put(`${this.apiUrl}/spaces/${id}`, data, { headers });
+  }
+
+  deleteSpace(id: number): Observable<any> {
+    const token = localStorage.getItem('access_token'); 
+
+    const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.put(`${this.apiUrl}/spaces/available/${id}`, {}, { headers });
+}
+
 } 
