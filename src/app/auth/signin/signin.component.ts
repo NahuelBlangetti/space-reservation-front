@@ -11,8 +11,8 @@ import { ToastModule } from 'primeng/toast';
   selector: 'app-singin',
   standalone: true,
   imports: [HttpClientModule, ReactiveFormsModule, CommonModule, ToastModule], 
-  templateUrl: './signin.component.html', // Ajusta la ruta
-  styleUrls: ['./signin.component.css'], // Ajusta la ruta
+  templateUrl: './signin.component.html',
+  styleUrls: ['./signin.component.css'],
 })
 export class SigninComponent {
   loginForm: FormGroup;
@@ -34,7 +34,7 @@ export class SigninComponent {
         (response) => {
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Inicio de sesión exitoso', life: 1500, closable: false});
           localStorage.setItem('access_token', response.access_token);
-          this.router.navigate(['/mySpaces']); // Redirigir después de iniciar sesión
+          this.router.navigate(['/mySpaces']);
         },
         (error) => {
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Error de inicio de sesión.', life: 1500, closable: false});

@@ -19,18 +19,16 @@ export class SignupComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private messageService: MessageService) {
     this.registerForm = this.fb.group({
-      name: ['', Validators.required], // Cambiado a 'name'
+      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       passwordRepeat: ['', Validators.required],
     }, {
-      validators: this.passwordMatchValidator // Añadir validación para confirmar la contraseña
+      validators: this.passwordMatchValidator 
     });
   }
 
-  ngOnInit() {
-    // Aquí puedes inicializar cualquier cosa si es necesario
-  }
+
 
   onSubmit() {
     if (this.registerForm.valid) {
@@ -38,7 +36,7 @@ export class SignupComponent implements OnInit {
         name: this.registerForm.value.name,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
-        password_confirmation: this.registerForm.value.passwordRepeat, // Aquí hacemos el cambio
+        password_confirmation: this.registerForm.value.passwordRepeat,
       };
   
       this.apiService.register(formData).subscribe(

@@ -11,7 +11,7 @@ export class AuthService {
   isLoggedIn$ = this.loggedInSubject.asObservable();
 
   constructor(private apiService: ApiService) {
-    // Comprobar si hay un token al iniciar la aplicación
+
     const token = localStorage.getItem('access_token');
     if (token) {
       this.loggedInSubject.next(true);
@@ -23,7 +23,7 @@ export class AuthService {
       tap((response) => {
         if (response && response.access_token) {
           localStorage.setItem('access_token', response.access_token);
-          this.loggedInSubject.next(true); // Cambia el estado de autenticación
+          this.loggedInSubject.next(true);
         }
       })
     );
@@ -31,11 +31,11 @@ export class AuthService {
 
   logout() {
     console.log('Logout called');
-    localStorage.removeItem('access_token'); // Asegúrate de limpiar correctamente
+    localStorage.removeItem('access_token'); 
     this.loggedInSubject.next(false);
   }
 
   isLoggedIn() {
-    return this.loggedInSubject.value; // Devuelve el estado actual
+    return this.loggedInSubject.value;
   }
 }
