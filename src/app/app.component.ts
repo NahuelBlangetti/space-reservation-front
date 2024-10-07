@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MyspacesComponent } from './myspaces/myspaces.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { provideAnimations } from '@angular/platform-browser/animations';
+
 
 @Component({
   selector: 'app-root',

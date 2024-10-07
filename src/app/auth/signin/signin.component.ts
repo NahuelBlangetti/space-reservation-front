@@ -7,16 +7,14 @@ import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
-
 @Component({
   selector: 'app-singin',
   standalone: true,
-  imports: [HttpClientModule, ReactiveFormsModule, CommonModule, ToastModule],
-  providers:[MessageService], 
+  imports: [HttpClientModule, ReactiveFormsModule, CommonModule, ToastModule], 
   templateUrl: './signin.component.html', // Ajusta la ruta
-  styleUrls: ['./signin.component.css'] // Ajusta la ruta
+  styleUrls: ['./signin.component.css'], // Ajusta la ruta
 })
-export class SigninComponent{
+export class SigninComponent {
   loginForm: FormGroup;
   loginError: string = ''; 
 
@@ -26,6 +24,7 @@ export class SigninComponent{
       password: ['', [Validators.required]]
     });
   }
+  
   ngOnInit(): void {}
 
   onSubmit() {
@@ -33,16 +32,14 @@ export class SigninComponent{
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe(
         (response) => {
-          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Inicio de sesión exitoso'});
+          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Inicio de sesión exitoso', life: 1500, closable: false});
           localStorage.setItem('access_token', response.access_token);
           this.router.navigate(['/mySpaces']); // Redirigir después de iniciar sesión
         },
         (error) => {
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error de inicio de sesión.'});
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error de inicio de sesión.', life: 1500, closable: false});
         }
       );
     }
   }
-  
-
 }
