@@ -24,11 +24,13 @@ export class SignupComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       passwordRepeat: ['', Validators.required],
     }, {
-      validators: this.passwordMatchValidator 
+      validators: this.passwordMatchValidator
     });
   }
 
-
+  ngOnInit() {
+    // Aquí puede1s inicializar cualquier cosa si es necesario
+  }
 
   onSubmit() {
     if (this.registerForm.valid) {
@@ -36,7 +38,7 @@ export class SignupComponent implements OnInit {
         name: this.registerForm.value.name,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
-        password_confirmation: this.registerForm.value.passwordRepeat,
+        password_confirmation: this.registerForm.value.passwordRepeat, // Aquí hacemos el cambio
       };
   
       this.apiService.register(formData).subscribe(
