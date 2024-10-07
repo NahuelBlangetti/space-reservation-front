@@ -29,7 +29,7 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Aquí puede1s inicializar cualquier cosa si es necesario
+  
   }
 
   onSubmit() {
