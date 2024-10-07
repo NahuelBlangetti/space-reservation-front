@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router'; // Importa el Router
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 
 
@@ -82,7 +83,7 @@ export class HomeComponent implements OnInit {
 
 
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router, private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.getSpaces();
@@ -104,7 +105,7 @@ export class HomeComponent implements OnInit {
         this.filteredSpaces = spaces;
       },
       error: (error) => {
-        console.error('Error al obtener los espacios:', error);
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al obtener los espacios:', life: 1500, closable: false});
       }
     });
   } 
@@ -125,26 +126,19 @@ export class HomeComponent implements OnInit {
     this.filteredSpaces = [...this.allSpaces];
 
     this.filteredSpaces = this.filteredSpaces.filter((space: Space) => {
+     
         const isTypeMatch = space.type === this.selectedSpaceType || !this.selectedSpaceType;
 
-        const isCapacityMatch = !this.selectedCapacity || (space.capacity && space.capacity == this.selectedCapacity);
+        const isCapacityMatch = this.selectedCapacity ? space.capacity >= this.selectedCapacity : true;
 
-
-        // Filtro por fecha y hora
-        const selectedStartDate = this.selectedStartDate ? new Date(this.selectedStartDate) : null;
-        const spaceStartDate = new Date(space.startDate);
-
-        if (selectedStartDate && this.selectedStartTime) {
-          // Descomponer la hora seleccionada
-          const [hours, minutes] = this.selectedStartTime.split(':');
-          selectedStartDate.setHours(+hours);
-          selectedStartDate.setMinutes(+minutes);
-          selectedStartDate.setSeconds(0); // Asegurarse de que los segundos están en 0
-        }
-
-        // Comparar solo fechas si no hay hora seleccionada
-        const isDateMatch = !selectedStartDate || (selectedStartDate && spaceStartDate >= selectedStartDate);
-
+        const isDateMatch = this.selectedStartDate
+          ? !space.reservations || !space.reservations.some(reservation => {
+              // Convertir las fechas para que solo se compare la parte de la fecha (sin horas)
+              const reservationDate = new Date(reservation.start_time).toISOString().split('T')[0]; // Solo la parte de la fecha
+              console.log(reservationDate, this.selectedStartDate);
+              return reservationDate === this.selectedStartDate;
+            })
+          : true;
     
         return isTypeMatch && isCapacityMatch && isDateMatch;
     });
@@ -274,6 +268,7 @@ export class HomeComponent implements OnInit {
     this.apiService.createSpace(space).subscribe({
       next: () => {
         this.closeCreateModal();
+        this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Espacio creado exitosamente.',life: 1500, closable: false});
         this.getSpaces();
         this.router.navigate(['/']).then(() => {
           location.reload();
@@ -281,7 +276,8 @@ export class HomeComponent implements OnInit {
         this.newSpace = {id: 0, name: '', type: '', capacity: 0, startDate: '', endDate: '', description: '', unavailableTimes: [], reservations: [], photo: '' };
       },
       error: (error) => {
-        console.error('Error al crear el espacio:', error);
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al crear el espacio:', life: 1500, closable: false});
+
       }
     });
   }
@@ -290,6 +286,7 @@ export class HomeComponent implements OnInit {
     this.apiService.editSpace(space.id, space).subscribe({
       next: () => {
         this.closeEditModal(); // Cerrar el modal después de guardar
+        this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Espacio Actualizado', life: 1500, closable: false});
         this.getSpaces(); // Opcionalmente, volver a obtener la lista de espacios
       },
       error: (error) => {
@@ -301,6 +298,7 @@ export class HomeComponent implements OnInit {
   deleteSpace(space: any) {
     this.apiService.deleteSpace(space.id).subscribe({
       next: () => {
+        this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Espacio Deshabilitado', life: 1500, closable: false});
         this.getSpaces();
       },
       error: (error) => {
