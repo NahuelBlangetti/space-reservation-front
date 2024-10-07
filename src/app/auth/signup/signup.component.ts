@@ -4,18 +4,20 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ApiService } from '../../api.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [HttpClientModule, ReactiveFormsModule, CommonModule], // Aquí importas ReactiveFormsModule
+  imports: [HttpClientModule, ReactiveFormsModule, CommonModule],
+  providers:[MessageService],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router) {
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private messageService: MessageService) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required], // Cambiado a 'name'
       email: ['', [Validators.required, Validators.email]],
@@ -41,19 +43,19 @@ export class SignupComponent implements OnInit {
   
       this.apiService.register(formData).subscribe(
         (response) => {
-          console.log('Usuario registrado con éxito', response);
+          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Usuario Creado con Exito!'});
           localStorage.setItem('access_token', response.access_token);
           this.router.navigate(['/mySpaces']);
         },
         (error) => {
           console.error('Error al registrar el usuario', error);
           if (error.error && error.error.errors) {
-            console.log('Errores de validación:', error.error.errors);
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al validar el usuario.'});
           }
         }
       );
     } else {
-      console.log('Formulario no válido', this.registerForm.errors);
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al validar el usuario.'});
     }
   }
   

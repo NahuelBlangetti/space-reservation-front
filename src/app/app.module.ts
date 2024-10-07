@@ -7,8 +7,7 @@ import { JwtInterceptor } from './interceptors/jwt.service';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

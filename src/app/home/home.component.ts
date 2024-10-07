@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
   selectedSpaceType: string = '';
   selectedCapacity: number | null = null;
   selectedStartDate: string = '';
+  selectedStartTime: string = '';
   allSpaces: Space[] = [];
   newSpace: Space = {
     id: 0,
@@ -129,11 +130,22 @@ export class HomeComponent implements OnInit {
         const isCapacityMatch = !this.selectedCapacity || (space.capacity && space.capacity == this.selectedCapacity);
 
 
+        // Filtro por fecha y hora
+        const selectedStartDate = this.selectedStartDate ? new Date(this.selectedStartDate) : null;
         const spaceStartDate = new Date(space.startDate);
-        const selectedStartDate = new Date(this.selectedStartDate);
-        console.log(spaceStartDate, selectedStartDate);
-        const isDateMatch = !this.selectedStartDate || spaceStartDate.getTime() === selectedStartDate.getTime();
 
+        if (selectedStartDate && this.selectedStartTime) {
+          // Descomponer la hora seleccionada
+          const [hours, minutes] = this.selectedStartTime.split(':');
+          selectedStartDate.setHours(+hours);
+          selectedStartDate.setMinutes(+minutes);
+          selectedStartDate.setSeconds(0); // Asegurarse de que los segundos están en 0
+        }
+
+        // Comparar solo fechas si no hay hora seleccionada
+        const isDateMatch = !selectedStartDate || (selectedStartDate && spaceStartDate >= selectedStartDate);
+
+    
         return isTypeMatch && isCapacityMatch && isDateMatch;
     });
   } 

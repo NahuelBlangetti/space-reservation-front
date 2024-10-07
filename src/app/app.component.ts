@@ -8,6 +8,8 @@ import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MyspacesComponent } from './myspaces/myspaces.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +24,10 @@ import { MyspacesComponent } from './myspaces/myspaces.component';
     ReactiveFormsModule,
     MyspacesComponent,
     AppComponent,
-    RouterModule
+    RouterModule,
+    ToastModule,
   ],
+  providers:[MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

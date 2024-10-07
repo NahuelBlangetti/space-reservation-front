@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ApiService } from '../api.service';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 interface Space {
   id: number;
@@ -38,15 +39,11 @@ interface Reserva {
   space: Space | null;
 }
 
-
-
-
-
-
 @Component({
   selector: 'app-myspaces',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  providers:[MessageService],
   templateUrl: './myspaces.component.html',
   styleUrl: './myspaces.component.css'
 })
@@ -74,7 +71,7 @@ export class MyspacesComponent {
   };
   
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.getSpaces();
@@ -87,7 +84,7 @@ export class MyspacesComponent {
         this.spaces = spaces;
       },
       error: (error) => {
-        console.error('Error al obtener los espacios:', error);
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al obtener los espacios:'});
       }
     });
   }
@@ -124,7 +121,7 @@ export class MyspacesComponent {
     });
   
     if (existeReservaConflicto) {
-      alert('Ya existe una reserva en ese horario.');
+      this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Reserva creada exitosamente.'});
     } else if (this.nuevaReserva.id) { // Si se está editando
       // Lógica de actualización
       this.apiService.updateReservation(this.nuevaReserva.id, {
@@ -151,7 +148,8 @@ export class MyspacesComponent {
         error: (err) => {
           console.error(err);
           const message = err?.error?.message || 'Ha ocurrido un error';
-          alert(message);
+          
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error'});
         },
       });
     } else {
@@ -163,7 +161,7 @@ export class MyspacesComponent {
         end_time
       }).subscribe({
         next: (response) => {
-          alert(response.message);
+          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Reserva creada exitosamente.'});
           this.reservas.push({ 
             ...this.nuevaReserva, 
             start_time, 
@@ -179,7 +177,7 @@ export class MyspacesComponent {
         error: (err) => {
           console.error(err);
           const message = err?.error?.message || 'Ha ocurrido un error';
-          alert(message);
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error'});
         }
       });
     }
@@ -237,11 +235,18 @@ export class MyspacesComponent {
       next: () => {
         this.reservas = this.reservas.filter(r => r.id !== reserva.id);
         alert('Reserva cancelada exitosamente.');
+        this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Reserva cancelada exitosamente.'});
       },
-      error: (err) => {
-        // Manejo de errores
-        console.error('Error al cancelar la reserva:', err);
+      error: () => {
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al cancelar la reserva:'});
       }
     });
-  }  
+  }
+
+
+  showError() {
+    
+  }
+
+
 }
