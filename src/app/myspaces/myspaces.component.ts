@@ -148,10 +148,9 @@ export class MyspacesComponent {
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Reserva editada exitosamente.', life: 1500, closable: false});
         },
         error: (err) => {
-          console.error(err);
-          if (err.message == "El espacio no está disponible en ese horario" ) {
-            this.messageService.add({severity:'error', summary: 'Error', detail: 'El espacio no está disponible en ese horario', life: 1500, closable: false});
-          }
+          if (err.status == 409) {
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'La reserva se superpone con otra existente', life: 1500, closable: false});
+          } 
         },
       });
     } else {
@@ -176,10 +175,10 @@ export class MyspacesComponent {
           this.cerrarModal();
         },
         error: (err) => {
-          console.error(err);
-          if (err.message == "La reserva se superpone con otra existente" ) {
+
+          if (err.status == 409) {
             this.messageService.add({severity:'error', summary: 'Error', detail: 'La reserva se superpone con otra existente', life: 1500, closable: false});
-          }
+          }          
         }
       });
     }
