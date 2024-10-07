@@ -149,9 +149,9 @@ export class MyspacesComponent {
         },
         error: (err) => {
           console.error(err);
-          const message = err?.error?.message || 'Ha ocurrido un error';
-          
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error', life: 1500, closable: false});
+          if (err.message == "El espacio no está disponible en ese horario" ) {
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'El espacio no está disponible en ese horario', life: 1500, closable: false});
+          }
         },
       });
     } else {
@@ -177,8 +177,9 @@ export class MyspacesComponent {
         },
         error: (err) => {
           console.error(err);
-          const message = err?.error?.message || 'Ha ocurrido un error';
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Ha ocurrido un error', life: 1500, closable: false});
+          if (err.message == "La reserva se superpone con otra existente" ) {
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'La reserva se superpone con otra existente', life: 1500, closable: false});
+          }
         }
       });
     }
@@ -227,7 +228,6 @@ export class MyspacesComponent {
       space: reserva.space
     };
     this.abrirModal();
-
   }
   
 
