@@ -128,7 +128,9 @@ export class HomeComponent implements OnInit {
      
         const isTypeMatch = space.type === this.selectedSpaceType || !this.selectedSpaceType;
 
-        const isCapacityMatch = this.selectedCapacity ? space.capacity >= this.selectedCapacity : true;
+        console.log(space.capacity, Number(this.selectedCapacity));
+
+        const isCapacityMatch = this.selectedCapacity ? space.capacity == Number(this.selectedCapacity) : true;
 
         const isDateMatch = this.selectedStartDate
           ? !space.reservations || !space.reservations.some(reservation => {
