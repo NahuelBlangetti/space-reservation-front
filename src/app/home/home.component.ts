@@ -24,8 +24,8 @@ interface Space {
 interface Reservation {
   id: number;
   space_id: number;
-  start_time: string; // Horario de inicio
-  end_time: string; // Horario de fin
+  start_time: string; 
+  end_time: string;
 }
 
 interface User {
@@ -111,10 +111,10 @@ export class HomeComponent implements OnInit {
   } 
 
   loadSpaces() {
-    // Carga tus espacios desde la API o desde donde sea necesario
+
     this.apiService.getItems().subscribe(spaces => {
-      this.allSpaces = spaces; // Guarda los espacios originales
-      this.filteredSpaces = [...this.allSpaces]; // Inicializa filteredSpaces con una copia de allSpaces
+      this.allSpaces = spaces; 
+      this.filteredSpaces = [...this.allSpaces]; 
     });
   }
 
@@ -122,7 +122,6 @@ export class HomeComponent implements OnInit {
   onFilterSubmit(event: Event): void {
     event.preventDefault();
 
-    // Reinicia los espacios filtrados a todos los espacios originales antes de filtrar
     this.filteredSpaces = [...this.allSpaces];
 
     this.filteredSpaces = this.filteredSpaces.filter((space: Space) => {
@@ -133,8 +132,8 @@ export class HomeComponent implements OnInit {
 
         const isDateMatch = this.selectedStartDate
           ? !space.reservations || !space.reservations.some(reservation => {
-              // Convertir las fechas para que solo se compare la parte de la fecha (sin horas)
-              const reservationDate = new Date(reservation.start_time).toISOString().split('T')[0]; // Solo la parte de la fecha
+
+              const reservationDate = new Date(reservation.start_time).toISOString().split('T')[0]; 
               console.log(reservationDate, this.selectedStartDate);
               return reservationDate === this.selectedStartDate;
             })
@@ -247,7 +246,7 @@ export class HomeComponent implements OnInit {
     } else if (type === 'coworking') {
       return 'Coworking';
     }
-    return type; // Devuelve el tipo original si no coincide con ninguna condición
+    return type;
   }
 
   closeEditModal() {
@@ -285,9 +284,9 @@ export class HomeComponent implements OnInit {
   updateSpace(space: Space) {
     this.apiService.editSpace(space.id, space).subscribe({
       next: () => {
-        this.closeEditModal(); // Cerrar el modal después de guardar
+        this.closeEditModal(); 
         this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Espacio Actualizado', life: 1500, closable: false});
-        this.getSpaces(); // Opcionalmente, volver a obtener la lista de espacios
+        this.getSpaces();
       },
       error: (error) => {
         console.error('Error al editar el espacio:', error);

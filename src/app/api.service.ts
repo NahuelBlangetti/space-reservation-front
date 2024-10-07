@@ -32,7 +32,7 @@ export class ApiService {
   getUser(): Observable<any> {
     const token = localStorage.getItem('access_token'); 
 
-    // Incluimos el token en las cabeceras
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
@@ -43,7 +43,7 @@ export class ApiService {
   getReservations(): Observable<any> {
     const token = localStorage.getItem('access_token'); 
 
-    // Incluimos el token en las cabeceras
+
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
@@ -54,7 +54,7 @@ export class ApiService {
   addReservation(data: any): Observable<any> {
     const token = localStorage.getItem('access_token'); 
 
-    // Incluimos el token en las cabeceras
+    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
@@ -65,7 +65,7 @@ export class ApiService {
   updateReservation(id: number, data: any): Observable<any> {
     const token = localStorage.getItem('access_token'); 
 
-    // Incluimos el token en las cabeceras
+    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
@@ -76,7 +76,7 @@ export class ApiService {
   deleteReservation(id: number): Observable<any> {
     const token = localStorage.getItem('access_token'); 
 
-    // Incluimos el token en las cabeceras
+    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
@@ -87,7 +87,7 @@ export class ApiService {
   createSpace(data: any): Observable<any> {
     const token = localStorage.getItem('access_token'); 
 
-    // Incluimos el token en las cabeceras
+    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
@@ -100,7 +100,7 @@ export class ApiService {
 
     const token = localStorage.getItem('access_token'); 
 
-    // Incluimos el token en las cabeceras
+    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });

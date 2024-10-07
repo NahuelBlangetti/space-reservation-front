@@ -108,7 +108,6 @@ export class MyspacesComponent {
     const start_time = `${this.nuevaReserva.fecha}T${this.nuevaReserva.horaInicio}`;
     const end_time = `${this.nuevaReserva.fecha}T${this.nuevaReserva.horaFin}`;
   
-    // Comprobar que end_time sea posterior a start_time
     if (new Date(end_time) <= new Date(start_time)) {
       this.messageService.add({severity:'info', summary: 'Atento', detail: 'La hora de finalización debe ser posterior a la hora de inicio.', life: 1500, closable: false});
 
@@ -124,8 +123,8 @@ export class MyspacesComponent {
   
     if (existeReservaConflicto) {
       this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Reserva creada exitosamente.',life: 1500, closable: false});
-    } else if (this.nuevaReserva.id) { // Si se está editando
-      // Lógica de actualización
+    } else if (this.nuevaReserva.id) { 
+  
       this.apiService.updateReservation(this.nuevaReserva.id, {
         user_id: this.nuevaReserva.user_id,
         space_id: this.nuevaReserva.space_id,
@@ -139,7 +138,7 @@ export class MyspacesComponent {
               ...this.nuevaReserva,
               start_time,
               end_time,
-              updated_at: new Date() // Mantener actualizado el timestamp
+              updated_at: new Date() 
             };
           }
           this.resetForm(); 
@@ -156,7 +155,6 @@ export class MyspacesComponent {
         },
       });
     } else {
-      // Lógica para crear una nueva reserva
       this.apiService.addReservation({
         user_id: this.nuevaReserva.user_id,
         space_id: this.nuevaReserva.space_id,
@@ -171,7 +169,7 @@ export class MyspacesComponent {
             end_time,
             created_at: new Date(),
             updated_at: new Date(),
-            id: response.id // Asumiendo que la API devuelve el ID de la nueva reserva
+            id: response.id 
           });
           this.resetForm();
           this.getReservations();
