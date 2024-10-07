@@ -2,7 +2,13 @@
 
 Hola Tots, espero que les guste! 
 
-Este proyecto fue generado con Angular CLI versión 18.2.7.
+Este proyecto fue generado con Angular CLI versión 18.2.7. 
+
+Usar Node version 18 
+
+Comandos para instalar:
+$ npm install
+$ npm install -g @angular/cli
 
 Ejecuta ng serve para un servidor de desarrollo. Navega a http://localhost:4200/. La aplicación se recargará automáticamente si cambias alguno de los archivos fuente.
 
