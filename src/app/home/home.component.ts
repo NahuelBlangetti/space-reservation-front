@@ -128,16 +128,25 @@ export class HomeComponent implements OnInit {
      
         const isTypeMatch = space.type === this.selectedSpaceType || !this.selectedSpaceType;
 
-        console.log(space.capacity, Number(this.selectedCapacity));
-
         const isCapacityMatch = this.selectedCapacity ? space.capacity == Number(this.selectedCapacity) : true;
 
         const isDateMatch = this.selectedStartDate
           ? !space.reservations || !space.reservations.some(reservation => {
 
-              const reservationDate = new Date(reservation.start_time).toISOString().split('T')[0]; 
-              console.log(reservationDate, this.selectedStartDate);
-              return reservationDate === this.selectedStartDate;
+            const reservationDate = new Date(reservation.start_time).toISOString().split('T')[0]; 
+            const selectedDate = new Date(this.selectedStartDate).toISOString().split('T')[0];
+            
+            // Convertir las horas a milisegundos para hacer comparaciones
+            const reservationStart = new Date(reservation.start_time).getTime();
+            const reservationEnd = new Date(reservation.end_time).getTime();
+            
+            // Crear un objeto Date para la hora seleccionada en la fecha seleccionada
+            const selectedTime = new Date(`${this.selectedStartDate}T${this.selectedStartTime}`).getTime();
+            
+            // Verificar si es la misma fecha y si la hora seleccionada está fuera del rango de la reserva
+            return reservationDate === selectedDate && selectedTime >= reservationStart && selectedTime <= reservationEnd;
+            
+
             })
           : true;
     
