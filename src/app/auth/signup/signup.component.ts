@@ -5,12 +5,12 @@ import { ApiService } from '../../api.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [HttpClientModule, ReactiveFormsModule, CommonModule],
-  providers:[MessageService],
+  imports: [HttpClientModule, ReactiveFormsModule, CommonModule, ToastModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
@@ -43,19 +43,21 @@ export class SignupComponent implements OnInit {
   
       this.apiService.register(formData).subscribe(
         (response) => {
-          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Usuario Creado con Exito!'});
+          this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Usuario Creado con Exito!', life: 1500, closable: false});
           localStorage.setItem('access_token', response.access_token);
-          this.router.navigate(['/mySpaces']);
+          this.router.navigate(['/']).then(() => {
+            location.reload();
+          });
         },
         (error) => {
           console.error('Error al registrar el usuario', error);
           if (error.error && error.error.errors) {
-            this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al validar el usuario.'});
+            this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al validar el usuario.', life: 1500, closable: false});
           }
         }
       );
     } else {
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al validar el usuario.'});
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al validar el usuario.', life: 1500, closable: false});
     }
   }
   
