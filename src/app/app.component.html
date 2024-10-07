@@ -1,5 +1,15 @@
 <app-header></app-header>
 
+<p-toast>
+    <ng-template let-message pTemplate="message">
+      <div class="custom-toast">
+        <h5>{{ message.summary }}</h5>
+        <p>{{ message.detail }}</p>
+      </div>
+    </ng-template>
+</p-toast>
+  
+
 <router-outlet></router-outlet>
 
 <app-footer></app-footer>
