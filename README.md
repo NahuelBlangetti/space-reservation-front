@@ -59,6 +59,6 @@ Y las siguientes devDependencies:
 Ejecución
 Para ejecutar la aplicación, utiliza el siguiente comando:
 
-    ng serve
+        ng serve
 
 Luego, navega a http://localhost:4200/ en tu navegador.
