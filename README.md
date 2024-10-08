@@ -1,6 +1,6 @@
 # Space Reservation Front
 
-¡Hola Tots! Espero que les guste este proyecto.
+Hola TOTS, se le puso amor a todo el proyecto en general, espero que les guste!
 
 ## Descripción
 
