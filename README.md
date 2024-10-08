@@ -4,7 +4,7 @@
 
 ## Descripción
 
-Este proyecto es una aplicación de reservas de espacio desarrollada con Angular. Utiliza Angular CLI y varias bibliotecas para facilitar la funcionalidad y el diseño.
+Este proyecto es una aplicación de reservas de espacio desarrollada con Angular.
 
 ## Requisitos del Proyecto
 
