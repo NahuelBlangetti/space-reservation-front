@@ -17,16 +17,21 @@
       </thead>
       <tbody>
         <tr *ngFor="let reserva of reservas">
-          <td class="py-2 px-4 border-b">{{ reserva.space ? reserva.space.name : 'Sin espacio' }}</td>
-          <td class="py-2 px-4 border-b">{{ reserva.start_time | date:'shortDate' }}</td>
-          <td class="py-2 px-4 border-b">{{ reserva.start_time | date:'shortTime' }}</td>
-          <td class="py-2 px-4 border-b">{{ reserva.end_time | date:'shortTime' }}</td>
-          <td class="py-2 px-4 border-b">
+          <td class="text-center py-2 px-4 border-b">{{ reserva.space ? reserva.space.name : 'Sin espacio' }}</td>
+          <td class="text-center py-2 px-4 border-b">{{ reserva.start_time | date:'shortDate' }}</td>
+          <td class="text-center py-2 px-4 border-b">{{ reserva.start_time | date:'shortTime' }}</td>
+          <td class="text-center py-2 px-4 border-b">{{ reserva.end_time | date:'shortTime' }}</td>
+          <td class="text-center py-2 px-4 border-b">
             <button (click)="editarReserva(reserva)" 
               class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 my-1 rounded">Modificar</button>
             <button (click)="cancelarReserva(reserva)" 
               class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 my-1 rounded">Cancelar</button>
           </td>          
+        </tr>
+      </tbody>
+      <tbody *ngIf="reservas.length === 0">
+        <tr >
+          <td class="py-2 px-4 border-b text-center" colspan="5">No hay reservas cargadas.</td>
         </tr>
       </tbody>
     </table>
