@@ -4,7 +4,6 @@ import { Router } from '@angular/router'; // Importa el Router
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; // Importa RouterModule
 import { ApiService } from '../api.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +16,7 @@ export class HeaderComponent {
   isLoggedIn: boolean = false;
   userName: any;
 
-  constructor(private authService: AuthService, private router: Router, private apiService: ApiService, private messageService: MessageService) {
+  constructor(private authService: AuthService, private router: Router, private apiService: ApiService) {
     this.authService.isLoggedIn$.subscribe(loggedIn => {
       this.isLoggedIn = loggedIn;
     });
@@ -40,7 +39,6 @@ export class HeaderComponent {
     event.stopPropagation();
     this.authService.logout();
     this.router.navigate(['/']).then(() => {
-      this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Session Cerrada.',life: 2000, closable: false});
       location.reload();
     });
   }
