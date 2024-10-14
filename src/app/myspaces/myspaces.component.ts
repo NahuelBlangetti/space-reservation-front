@@ -29,7 +29,7 @@ interface User {
 }
 
 interface Reserva {
-  id: number; // Permitir que 'id' sea null
+  id: number; 
   user_id: number;
   space_id: number;
   evento: string;
@@ -86,12 +86,12 @@ export class MyspacesComponent {
         center: 'title',
         right: 'dayGridMonth,dayGridWeek,dayGridDay'
       },
-      eventTimeFormat: { // Formato para mostrar la hora
+      eventTimeFormat: {
         hour: '2-digit',
         minute: '2-digit',
-        hour12: false // Usar formato de 24 horas
+        hour12: false
       },
-      eventDisplay: 'block', // Mostrar eventos en bloque para mejor visibilidad
+      eventDisplay: 'block',
     };
    }
 
@@ -136,9 +136,9 @@ export class MyspacesComponent {
               title: reserva.space?.name,
               start: reserva.start_time,
               end: reserva.end_time,
-              color: reserva.space?.type === 'Sala de reuniones' ? 'blue' : 'green', // Color por tipo de espacio
-              textColor: 'white', // Color del texto para mejorar contraste
-              borderColor: reserva.space?.type === 'Sala de reuniones' ? 'darkblue' : 'darkgreen', // Borde para mejor visibilidad
+              color: reserva.space?.type === 'Sala de reuniones' ? 'blue' : 'green',
+              textColor: 'white',
+              borderColor: reserva.space?.type === 'Sala de reuniones' ? 'darkblue' : 'darkgreen',
             };
           });
         }

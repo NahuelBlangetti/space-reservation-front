@@ -16,12 +16,11 @@ export class ApiService {
   private userSubject = new BehaviorSubject<any>(null);
 
 
-  /* Auth */
+  
   register(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  // Modificación de la función login
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((response: any) => {
@@ -32,26 +31,26 @@ export class ApiService {
       }),
       catchError(error => {
         console.error('Error al iniciar sesión:', error);
-        return throwError(error); // Manejo de errores
+        return throwError(error);
       })
     );
   }
 
   loadUser(Token?: string): void {
-    const token = Token // Obtiene el token
-    if (token) { // Solo llama si hay un token
+    const token = Token 
+    if (token) { 
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`
       });
 
       this.http.get(`${this.apiUrl}/user`, { headers }).pipe(
         tap(user => {
-          this.userSubject.next(user); // Actualiza el BehaviorSubject con la información del usuario
+          this.userSubject.next(user); 
         }),
         catchError(error => {
-          return throwError(error); // Manejo de errores
+          return throwError(error);
         })
-      ).subscribe(); // Suscripción para ejecutar la llamada
+      ).subscribe(); 
     }
   }
 
@@ -76,7 +75,7 @@ export class ApiService {
   }
 
   getUserObservable(): Observable<any> {
-    return this.userSubject.asObservable(); // Devuelve el observable del BehaviorSubject
+    return this.userSubject.asObservable();
   }
 
   getReservations(): Observable<any> {
