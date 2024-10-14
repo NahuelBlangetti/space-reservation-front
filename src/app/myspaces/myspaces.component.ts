@@ -4,6 +4,9 @@ import { ApiService } from '../api.service';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+
 
 interface Space {
   id: number;
@@ -43,7 +46,7 @@ interface Reserva {
 @Component({
   selector: 'app-myspaces',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToastModule],
+  imports: [CommonModule, FormsModule, ToastModule, FullCalendarModule],
   templateUrl: './myspaces.component.html',
   styleUrl: './myspaces.component.css'
 })
@@ -52,8 +55,10 @@ export class MyspacesComponent {
 
   loading: boolean = false;
   reservas: Reserva[] = [];
+  allReservas: Reserva[] = [];
   spaces: Space[] = [];
   mostrarModal: boolean = false;
+  calendarOptions: any;
  
   nuevaReserva: Reserva = {
     id: 0,
@@ -71,11 +76,29 @@ export class MyspacesComponent {
   };
   
 
-  constructor(private apiService: ApiService, private messageService: MessageService) { }
+  constructor(private apiService: ApiService, private messageService: MessageService) { 
+    this.calendarOptions = {
+      initialView: 'dayGridMonth',
+      plugins: [dayGridPlugin],
+      events: [],
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,dayGridWeek,dayGridDay'
+      },
+      eventTimeFormat: { // Formato para mostrar la hora
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // Usar formato de 24 horas
+      },
+      eventDisplay: 'block', // Mostrar eventos en bloque para mejor visibilidad
+    };
+   }
 
   ngOnInit(): void {
     this.getSpaces();
     this.getReservations();
+    this.allReservations();
   }
 
   getSpaces(): void {
@@ -103,6 +126,29 @@ export class MyspacesComponent {
     });
   }
 
+  allReservations(): void {
+    this.apiService.allReservations().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.allReservas = response.reservations;
+          this.calendarOptions.events = this.allReservas.map((reserva) => {
+            return {
+              title: reserva.space?.name,
+              start: reserva.start_time,
+              end: reserva.end_time,
+              color: reserva.space?.type === 'Sala de reuniones' ? 'blue' : 'green', // Color por tipo de espacio
+              textColor: 'white', // Color del texto para mejorar contraste
+              borderColor: reserva.space?.type === 'Sala de reuniones' ? 'darkblue' : 'darkgreen', // Borde para mejor visibilidad
+            };
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener las reservas:', error);
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al obtener las reservas:', life: 1500, closable: false});
+      }
+    });
+  }
 
   guardarReserva() {
     const start_time = `${this.nuevaReserva.fecha}T${this.nuevaReserva.horaInicio}`;
@@ -143,6 +189,7 @@ export class MyspacesComponent {
           }
           this.resetForm(); 
           this.getReservations();
+          this.allReservations();
           this.cerrarModal();
           
           this.messageService.add({severity:'success', summary: 'Éxito', detail: 'Reserva editada exitosamente.', life: 1500, closable: false});
@@ -172,6 +219,7 @@ export class MyspacesComponent {
           });
           this.resetForm();
           this.getReservations();
+          this.allReservations();
           this.cerrarModal();
         },
         error: (err) => {

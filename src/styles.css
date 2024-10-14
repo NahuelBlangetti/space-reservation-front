@@ -6,34 +6,39 @@
 
 /* Personalización de la notificación */
 .custom-toast {
-    background-color: rgb(34, 197, 94); /* Color de fondo */
-    border-radius: 8px; /* Bordes redondeados */
-    padding: 1rem; /* Espaciado interno */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-    position: relative; /* Necesario para posicionar la cruz de cerrar */
+    background-color: rgb(34, 197, 94);
+    border-radius: 8px;
+    padding: 1rem; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
   }
   
   /* Estilo para el botón de cerrar */
   .custom-toast .p-toast-close-icon {
-    position: absolute; /* Posición absoluta */
-    top: 10px; /* Ajusta según sea necesario */
-    right: 10px; /* Ajusta según sea necesario */
-    color: white; /* Color de la cruz */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    position: absolute;
+    top: 10px; 
+    right: 10px;
+    color: white;
+    cursor: pointer;
   }
   
   /* Estilo para el título */
   .custom-toast h5 {
-    margin: 0; /* Elimina el margen */
-    font-size: 1.2rem; /* Tamaño de fuente */
-    color: white; /* Color de texto */
+    margin: 0; 
+    font-size: 1.2rem;
+    color: white; 
   }
   
   /* Estilo para el detalle del mensaje */
   .custom-toast p {
-    margin: 0; /* Elimina el margen */
-    font-size: 1rem; /* Tamaño de fuente */
-    color: white; /* Color de texto */
+    margin: 0; 
+    font-size: 1rem;
+    color: white;
   }
   
-  
+  .calendario {
+    /* Centrar */
+    margin: 0 auto;
+    width: 800px;
+    height: 800px; 
+  }

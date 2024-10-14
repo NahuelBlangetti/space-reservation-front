@@ -30,7 +30,6 @@ export class AuthService {
   }
 
   logout() {
-    console.log('Logout called');
     localStorage.removeItem('access_token'); 
     this.loggedInSubject.next(false);
   }
